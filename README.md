@@ -1,4 +1,4 @@
-# 📊 Documentation - Partie Monitoring
+#  Documentation - Partie Monitoring
 
 ## Vue d'ensemble
 
@@ -12,7 +12,7 @@ Le monitoring de ce projet repose principalement sur :
 
 ---
 
-## 🏗️ Architecture du monitoring
+##  Architecture du monitoring
 
 Le monitoring est structuré autour de plusieurs composants :
 
@@ -23,21 +23,18 @@ monitoring/
 ├── grafana/
 │   ├── dashboards/
 │   └── datasources/
-├── alertmanager/
-│   └── alertmanager.yml
-└── docker-compose.yml
+
 ```
 
 ### Rôle de chaque service
 
 - Prometheus : collecte des métriques depuis les services exposés
 - Grafana : création de dashboards et visualisation des données
-- Alertmanager : gestion des alertes et notifications
 - Docker Compose : lancement des services ensemble
 
 ---
 
-## 🚀 Démarrage rapide
+##  Démarrage rapide
 
 ### Prérequis
 
@@ -48,7 +45,6 @@ Avant de lancer le monitoring, vérifiez que vous avez :
 - Les ports suivants libres :
   - 9090 pour Prometheus
   - 3000 pour Grafana
-  - 9093 pour Alertmanager
 
 ### Lancer le monitoring
 
@@ -75,7 +71,6 @@ docker-compose ps
 
 - Prometheus : http://localhost:9090
 - Grafana : http://localhost:3000
-- Alertmanager : http://localhost:9093
 
 ---
 
@@ -128,7 +123,7 @@ Cela permet de voir si les services surveillés sont bien accessibles.
 
 ---
 
-## 📊 Grafana
+##  Grafana
 
 ### Objectif
 
@@ -163,40 +158,8 @@ Les dashboards peuvent contenir :
 
 ---
 
-## 🚨 Alertmanager
 
-### Objectif
-
-Alertmanager gère les alertes générées par Prometheus afin de les envoyer vers des outils externes ou des notifications (email, Slack, Discord, etc.).
-
-### Fichier de configuration
-
-```yaml
-alertmanager/alertmanager.yml
-```
-
-Ce fichier permet de configurer :
-
-- les routes
-- les groupes d’alertes
-- les receivers
-- les notifications
-
-Exemple :
-
-```yaml
-route:
-  receiver: "mail"
-
-receivers:
-  - name: "mail"
-    email_configs:
-      - to: "admin@example.com"
-```
-
----
-
-## 🔍 Bonnes pratiques de monitoring
+##  Bonnes pratiques de monitoring
 
 Pour que le monitoring soit efficace, il est conseillé d’ajouter :
 
@@ -216,7 +179,7 @@ Exemples de métriques utiles :
 
 ---
 
-## 🧪 Vérification du bon fonctionnement
+##  Vérification du bon fonctionnement
 
 ### Contrôler les services Docker
 
@@ -244,7 +207,7 @@ docker-compose logs -f
 
 ---
 
-## 🐛 Dépannage rapide
+## Dépannage rapide
 
 ### Prometheus ne démarre pas
 
@@ -271,17 +234,17 @@ Vérifier :
 
 ---
 
-## 📚 Fichiers importants
+##  Fichiers importants
 
 - `monitoring/docker-compose.yml` : lancement des services
 - `monitoring/prometheus/prometheus.yml` : configuration Prometheus
 - `monitoring/grafana/datasources/` : configuration des sources de données
 - `monitoring/grafana/dashboards/` : dashboards Grafana
-- `monitoring/alertmanager/alertmanager.yml` : gestion des alertes
+
 
 ---
 
-## ✅ Objectif final
+##  Objectif final
 
 La partie monitoring permet d’avoir une vue claire sur l’état de l’application et de l’infrastructure. Grâce à Prometheus et Grafana, il est possible de surveiller les performances, détecter les anomalies et réagir rapidement aux incidents.
 
