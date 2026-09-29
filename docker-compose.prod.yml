@@ -1,24 +1,23 @@
 services:
-  nginx:
-    build:
-      context: .
-      dockerfile: docker/nginx/Dockerfile
-    container_name: nginx
-    ports:
-      - "80:80"
-
   mysql:
-    build:
-      context: .
-      dockerfile: docker/mysql/Dockerfile
+    image: mysql:8.0
+
+    restart: unless-stopped
+
     container_name: mysql
+
     environment:
-      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_ROOT_PASSWORD: R00t!2026_Docker
       MYSQL_DATABASE: wordpress
       MYSQL_USER: wordpress
-      MYSQL_PASSWORD: wordpresspassword
+      MYSQL_PASSWORD: WP!2026_Database
+
+    ports:
+      - "3306:3306"
+
     volumes:
       - mysql_data:/var/lib/mysql
+      - ./config/mysql/my.cnf:/etc/mysql/conf.d/my.cnf
 
 volumes:
   mysql_data:
