@@ -26,13 +26,7 @@ monitoring/
 
 ```
 
-### Rôle de chaque service
 
-- Prometheus : collecte des métriques depuis les services exposés
-- Grafana : création de dashboards et visualisation des données
-- Docker Compose : lancement des services ensemble
-
----
 
 ##  Démarrage rapide
 
@@ -44,7 +38,7 @@ Avant de lancer le monitoring, vérifiez que vous avez :
 - Docker Compose installé
 - Les ports suivants libres :
   - 9090 pour Prometheus
-  - 3000 pour Grafana
+  - 3001 pour Grafana
 
 ### Lancer le monitoring
 
@@ -70,7 +64,7 @@ docker-compose ps
 ### Accéder aux interfaces
 
 - Prometheus : http://localhost:9090
-- Grafana : http://localhost:3000
+- Grafana : http://localhost:3001
 
 ---
 
@@ -131,9 +125,9 @@ Grafana permet de visualiser les métriques collectées par Prometheus au traver
 
 ### Accès par défaut
 
-- URL : http://localhost:3000
+- URL : http://localhost:3001
 - Login : admin
-- Mot de passe : admin
+- Mot de passe : Pa$$w0rd
 
 ### Configuration
 
@@ -252,4 +246,5 @@ La partie monitoring permet d’avoir une vue claire sur l’état de l’applic
 
 ## Auteur
 
-Projet Docker - Partie Monitoring
+Projet Docker - Partie Monitoring 
+ 
