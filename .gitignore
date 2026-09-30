@@ -1,0 +1,19 @@
+# Variables d'environnement
+.env
+
+# Logs
+*.log
+
+# Dossiers Python (si utilisés plus tard)
+__pycache__/
+*.pyc
+
+# Fichiers système Windows
+Thumbs.db
+Desktop.ini
+
+# Dossier VS Code (optionnel)
+.vscode/
+
+# Fichiers Docker temporaires
+*.pid
