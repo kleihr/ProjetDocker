@@ -1,10 +1,9 @@
 services:
-
   nginx:
     build:
       context: .
       dockerfile: docker/nginx/Dockerfile
-
+    
     container_name: nginx
 
     restart: unless-stopped
@@ -30,7 +29,7 @@ services:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_DATABASE: ${MYSQL_DATABASE}
       MYSQL_USER: ${MYSQL_USER}
-      MYSQL_PASSWORD: ${MYSQL_PASSwORD}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
 
     volumes:
       - mysql_data:/var/lib/mysql
@@ -38,3 +37,10 @@ services:
 
     networks:
       - projet-network
+
+networks:
+  projet-network:
+    driver: bridge
+
+volumes:
+  mysql_data:
