@@ -27,10 +27,10 @@ services:
     restart: unless-stopped
 
     environment:
-      MYSQL_ROOT_PASSWORD: R00t!2026_Docker
-      MYSQL_DATABASE: wordpress
-      MYSQL_USER: wordpress
-      MYSQL_PASSWORD: WP!2026_Database
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSwORD}
 
     volumes:
       - mysql_data:/var/lib/mysql
@@ -38,10 +38,3 @@ services:
 
     networks:
       - projet-network
-
-networks:
-  projet-network:
-    driver: bridge
-
-volumes:
-  mysql_data:
