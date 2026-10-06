@@ -1,10 +1,46 @@
-# Use root/example as user/password credentials
-
 services:
+  nginx:
+    build:
+      context: .
+      dockerfile: docker/nginx/Dockerfile
+    
+    container_name: nginx
 
-  db:
-    image: mysql
-    restart: always
+    restart: unless-stopped
+
+    ports:
+      - "80:80"
+      - "443:443"
+
+    depends_on:
+      - mysql
+
+    networks:
+      - projet-network
+
+  mysql:
+    image: mysql:8.0
+
+    container_name: mysql
+
+    restart: unless-stopped
+
     environment:
-      MYSQL_ROOT_PASSWORD: example
-    # (this is just an example, not intended to be a production configuration)
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./config/mysql/my.cnf:/etc/mysql/conf.d/my.cnf
+
+    networks:
+      - projet-network
+
+networks:
+  projet-network:
+    driver: bridge
+
+volumes:
+  mysql_data:
