@@ -1,3 +1,4 @@
+
 <?php
 
 define('DB_NAME', getenv('WORDPRESS_DB_NAME'));
@@ -14,3 +15,4 @@ if (!defined('ABSPATH')) {
 }
 
 require_once ABSPATH . 'wp-settings.php';
+
