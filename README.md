@@ -4,13 +4,8 @@
 Un projet en Docker qui permet de déployer une application web automatisée avec une base de données.
 
 ## Auteurs
-
-- shimestu - Chef de Projet **Infrastructure**
-    [shimestu](https://github.com/shimetsu)
 - MateoGrgic - **WordPress**
     [MateoGrgic](https://github.com/MateoGrgic)
-- Adskkn - **Monitoring**
-    [Adskkn](https://github.com/adskkn)
 
 ## Branche WordPress
 
