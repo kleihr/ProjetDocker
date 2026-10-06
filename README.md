@@ -36,13 +36,17 @@ ProjetDocker/
 │ └── my.cnf
 │
 ├── docker/
+│ └── mysql/
+│ └── Dockerfile
 │ └── nginx/
 │ └── Dockerfile
 │
 ├── scripts/
 │ └── deploy.sh
+│ └── init-db.sh
 │
 ├── .env.example
+├── .env
 ├── .gitignore
 ├── docker-compose.prod.yml
 └── README.md
