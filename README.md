@@ -1,8 +1,8 @@
 # Infrastructure Docker - Projet Docker
 
 ## Auteur
-- shimestu - Chef de Projet **Infrastrucutre**
-    [shimestu ](https://github.com/shimetsu) 
+- kleihr - Chef de Projet **Infrastrucutre**
+    [kleihr ](https://github.com/kleihr) 
 
 ## Description
  
@@ -48,7 +48,7 @@ ProjetDocker/
 ├── .env.example
 ├── .env
 ├── .gitignore
-├── docker-compose.prod.yml
+├── docker-compose.yml
 └── README.md
 ```
  
