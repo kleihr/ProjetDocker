@@ -1,0 +1,28 @@
+services:
+  mysql:
+    image: mariadb:11
+    container_name: mysql
+    restart: always
+
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: wpuser
+      MYSQL_PASSWORD: password
+
+  wordpress:
+    image: wordpress:latest
+    container_name: wordpress
+    restart: always
+
+    depends_on:
+      - mysql
+
+    environment:
+      WORDPRESS_DB_HOST: mysql
+      WORDPRESS_DB_USER: wpuser
+      WORDPRESS_DB_PASSWORD: password
+      WORDPRESS_DB_NAME: wordpress
+
+    ports:
+      - "8080:80"
