@@ -1,7 +1,7 @@
 # Infrastructure Docker - Projet Docker
 
 ## Auteur
-- kleihr - Chef de Projet **Infrastrucutre**
+- kleihr - Chef de Projet **Infrastructure**
     [kleihr ](https://github.com/kleihr) 
 
 ## Description
@@ -253,27 +253,10 @@ Port 443 -> HTTPS
 ```
  
 Une redirection automatique HTTP → HTTPS est configurée.
-
-### Générer un nouveau certificat SSL (si nécessaire)
-
-```bash
-# Créer la clé privée et le certificat
-openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
-  -keyout app/nginx/ssl/server.key \
-  -out app/nginx/ssl/server.crt \
-  -subj "/C=FR/ST=France/L=Paris/O=ProjetDocker/CN=localhost"
-
-# Définir les permissions
-chmod 600 app/nginx/ssl/server.key
-chmod 644 app/nginx/ssl/server.crt
-```
-
  
 ---
  
 ## MySQL
- 
-La base de données utilise l'image officielle MySQL 8.0.
  
 Configuration personnalisée :
  
@@ -286,37 +269,6 @@ Objectifs :
 - personnalisation du serveur MySQL ;
 - limitation de certaines fonctionnalités ;
 - configuration centralisée.
-
-### Accès à MySQL
-
-```bash
-# Accéder au shell MySQL depuis le conteneur
-docker exec -it projet_docker-mysql-1 mysql -u root -p
-
-# Entrer le mot de passe : root_password_secure_2024
-```
-
-### Commandes MySQL utiles
-
-```sql
--- Voir les bases de données
-SHOW DATABASES;
-
--- Utiliser la base de données
-USE projet_docker;
-
--- Lister les utilisateurs
-SELECT User, Host FROM mysql.user;
-
--- Créer un nouvel utilisateur
-CREATE USER 'app_user'@'%' IDENTIFIED BY 'app_password_secure_2024';
-GRANT ALL PRIVILEGES ON projet_docker.* TO 'app_user'@'%';
-FLUSH PRIVILEGES;
-
--- Vérifier la connexion d'un utilisateur
-SHOW GRANTS FOR 'app_user'@'%';
-```
-
  
 ---
  
@@ -353,26 +305,6 @@ Arrêt :
 ```bash
 docker compose -f docker-compose.prod.yml down
 ```
-
-### Commandes Docker Compose utiles
-
-```bash
-# Afficher l'état des services
-docker compose -f docker-compose.prod.yml ps
-
-# Afficher les logs d'un service spécifique
-docker compose -f docker-compose.prod.yml logs mysql
-docker compose -f docker-compose.prod.yml logs nginx
-
-# Redémarrer un service
-docker compose -f docker-compose.prod.yml restart mysql
-
-# Reconstruire les images
-docker compose -f docker-compose.prod.yml build --no-cache
-
-# Exécuter une commande dans un conteneur
-docker compose -f docker-compose.prod.yml exec mysql ls -la
-```
  
 ---
  
@@ -407,19 +339,6 @@ docker compose down
 ```
  
 Le volume est automatiquement réutilisé lors du redémarrage des conteneurs.
-
-### Vérifier les volumes
-
-```bash
-# Lister tous les volumes Docker
-docker volume ls
-
-# Inspecter un volume spécifique
-docker volume inspect mysql_data
-
-# Supprimer un volume (attention : données perdues !)
-docker volume rm mysql_data
-```
  
 ---
  
@@ -436,14 +355,6 @@ Fichier utilisé :
 Variables configurées :
  
 ```env
-MYSQL_ROOT_PASSWORD=root_password_secure_2024
-MYSQL_DATABASE=projet_docker
-MYSQL_USER=app_user
-MYSQL_PASSWORD=app_password_secure_2024
-NGINX_PORT=80
-NGINX_SSL_PORT=443
-APP_ENV=production
-APP_DEBUG=false
 ```
  
 Le fichier `.env` est ignoré par Git :
@@ -459,182 +370,6 @@ Un fichier modèle est fourni :
 ```
  
 afin de permettre à tout utilisateur de recréer son propre fichier `.env`.
-
----
-
-# Tests à effectuer
-
-## 1. Vérification des conteneurs
-
-```bash
-# Vérifier que tous les conteneurs sont en cours d'exécution
-docker compose -f docker-compose.prod.yml ps
-
-# Résultat attendu :
-# NAME                     COMMAND                  SERVICE    STATUS
-# projet_docker-mysql-1    "docker-entrypoint.s…"   mysql      Up (healthy)
-# projet_docker-nginx-1    "/docker-entrypoint.…"   nginx      Up
-```
-
-## 2. Test de connectivité Nginx
-
-```bash
-# Test en HTTP (doit rediriger vers HTTPS)
-curl -I http://localhost
-
-# Test en HTTPS (accepter le certificat autosigné)
-curl -k https://localhost
-
-# Résultat attendu : 200 OK ou page d'accueil
-```
-
-## 3. Test de connectivité MySQL
-
-```bash
-# Se connecter à MySQL avec le root
-docker exec -it projet_docker-mysql-1 mysql -u root -p
-
-# Entrer le mot de passe : root_password_secure_2024
-# Vérifier :
-SHOW DATABASES;
-SELECT VERSION();
-EXIT;
-
-# Test depuis l'hôte (si le connecteur MySQL est installé)
-mysql -h 127.0.0.1 -u app_user -p projet_docker
-
-# Entrer le mot de passe : app_password_secure_2024
-```
-
-## 4. Test des volumes persistants
-
-```bash
-# Vérifier que le volume MySQL existe
-docker volume ls | grep mysql_data
-
-# Afficher les logs pour vérifier les erreurs
-docker compose -f docker-compose.prod.yml logs
-
-# Arrêter et redémarrer pour vérifier la persistance
-docker compose -f docker-compose.prod.yml down
-docker compose -f docker-compose.prod.yml up -d
-
-# Les données doivent être récupérées (vérifier dans MySQL)
-```
-
-## 5. Test de sécurité
-
-```bash
-# Vérifier que MySQL n'expose pas le port 3306
-netstat -tlnp | grep 3306  # Linux
-netstat -an | grep 3306     # macOS
-netstat -an | findstr 3306  # Windows
-
-# Résultat attendu : pas de résultat ou seulement localhost:3306
-
-# Vérifier les permissions des fichiers SSL
-ls -la app/nginx/ssl/
-
-# Résultat attendu : 
-# -rw------- 1 user group  1704 Oct  6 10:00 server.key
-# -rw-r--r-- 1 user group  1319 Oct  6 10:00 server.crt
-```
-
-## 6. Test du certificat SSL
-
-```bash
-# Afficher les informations du certificat
-openssl x509 -in app/nginx/ssl/server.crt -text -noout
-
-# Vérifier la date d'expiration
-openssl x509 -in app/nginx/ssl/server.crt -noout -dates
-```
-
-## 7. Test des logs
-
-```bash
-# Afficher les logs de tous les services
-docker compose -f docker-compose.prod.yml logs
-
-# Afficher les logs en temps réel
-docker compose -f docker-compose.prod.yml logs -f
-
-# Afficher les logs d'un service spécifique
-docker compose -f docker-compose.prod.yml logs mysql
-docker compose -f docker-compose.prod.yml logs nginx
-```
-
-## 8. Test de charge (optionnel)
-
-```bash
-# Installer Apache Bench (si nécessaire)
-# macOS : brew install httpd
-# Linux : sudo apt install apache2-utils
-# Windows : télécharger depuis Apache HTTP Server
-
-# Test de charge simple (1000 requêtes, 10 concurrentes)
-ab -n 1000 -c 10 -k https://localhost/
-
-# Résultat attendu : tous les tests doivent réussir
-```
-
----
-
-# Identifiants et accès
-
-## Accès Nginx/Application
-
-| Protocole | URL | Port |
-|-----------|-----|------|
-| HTTP | http://localhost | 80 |
-| HTTPS | https://localhost | 443 |
-
-> ⚠️ **Note** : Le certificat SSL étant autosigné, un avertissement de sécurité du navigateur peut apparaître. Acceptez l'exception pour poursuivre.
-
-## Accès MySQL
-
-### Depuis le conteneur (ligne de commande)
-
-```bash
-docker exec -it projet_docker-mysql-1 mysql -u root -p
-```
-
-**Identifiant root** :
-- Utilisateur : `root`
-- Mot de passe : `root_password_secure_2024`
-- Port : `3306` (interne au conteneur, non exposé)
-
-### Pour l'application
-
-**Identifiant application** :
-- Utilisateur : `app_user`
-- Mot de passe : `app_password_secure_2024`
-- Base de données : `projet_docker`
-- Hôte : `mysql` (depuis le conteneur)
-- Port : `3306`
-
-### Depuis un outil graphique (Workbench, DBeaver, etc.)
-
-> ⚠️ **ATTENTION** : MySQL n'est pas exposé vers l'extérieur. Pour accéder depuis un outil graphique en dehors du conteneur, vous devez modifier le `docker-compose.prod.yml` et ajouter une exposition du port (NON RECOMMANDÉ en production) :
-
-```yaml
-mysql:
-  ports:
-    - "3306:3306"  # À ajouter temporairement pour les tests
-```
-
-Puis relancer :
-```bash
-docker compose -f docker-compose.prod.yml up -d
-```
-
-**Connexion** :
-- Hôte : `127.0.0.1` ou `localhost`
-- Utilisateur : `app_user`
-- Mot de passe : `app_password_secure_2024`
-- Base de données : `projet_docker`
-
----
  
 # Bonnes pratiques de sécurité mises en place
  
