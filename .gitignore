@@ -21,3 +21,5 @@ Desktop.ini
 # Certificats SSL
 *.crt
 *.key
+app/nginx/ssl/server.crt 
+app/nginx/ssl/server.key

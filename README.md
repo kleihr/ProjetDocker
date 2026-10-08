@@ -28,8 +28,8 @@ ProjetDocker/
 │ └── nginx/
 │ ├── default.conf
 │ └── ssl/
-│ ├── server.crt
-│ └── server.key
+│ ├── server.crt.example
+│ └── server.key.example
 │
 ├── config/
 │ └── mysql/
@@ -46,7 +46,6 @@ ProjetDocker/
 │ └── init-db.sh
 │
 ├── .env.example
-├── .env
 ├── .gitignore
 ├── docker-compose.yml
 └── README.md
@@ -237,7 +236,7 @@ Les fichiers SSL sont stockés dans :
 ```text
 app/nginx/ssl/
 ```
- 
+
 Fichiers :
  
 ```text
