@@ -1,3 +1,3 @@
-FROM wordpress:php8.2-fpm
+FROM wordpress:latest
 
-EXPOSE 9000
+EXPOSE 80
