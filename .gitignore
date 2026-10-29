@@ -17,3 +17,9 @@ Desktop.ini
 
 # Fichiers Docker temporaires
 *.pid
+
+# Certificats SSL
+*.crt
+*.key
+app/nginx/ssl/server.crt 
+app/nginx/ssl/server.key
